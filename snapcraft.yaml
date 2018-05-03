@@ -1,0 +1,19 @@
+name: pc-kernel
+version: 4.15.0-21.22
+summary: generic linux kernel
+description: The generic Ubuntu kernel package as a snap
+type: kernel
+confinement: strict
+
+parts:
+  kernel:
+    source: https://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux-snap/+git/bionic
+    source-type: git
+    source-branch: master
+    plugin: make
+    make-parameters:
+      - KERNEL=linux-pc-image
+      - PROPOSED=true
+    build-packages:
+      - debootstrap
+      - lsb-release

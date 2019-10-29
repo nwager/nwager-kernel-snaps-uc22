@@ -7,7 +7,7 @@ confinement: strict
 
 parts:
   kernel:
-    source: https://git.launchpad.net/~ubuntu-kernel/ubuntu/+source/linux-snap/+git/bionic
+    source: https://git.launchpad.net/~ubuntu-kernel/+git/kernel-snaps-uc20
     source-type: git
     source-branch: master
     plugin: make

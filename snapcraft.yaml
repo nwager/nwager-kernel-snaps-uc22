@@ -13,6 +13,7 @@ parts:
     plugin: make
     make-parameters:
       - KERNEL_SERIES=focal
+      - KERNEL_SOURCE=linux
       - KERNEL=linux-pc-image
       - PROPOSED=true
     build-packages:

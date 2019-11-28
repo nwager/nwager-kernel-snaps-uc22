@@ -12,8 +12,7 @@ parts:
     source-branch: master
     plugin: make
     make-parameters:
-      - KERNEL_SERIES=focal
-      - KERNEL_SOURCE=linux
+      - KERNEL_SOURCE=focal:linux
       - KERNEL=linux-image-generic
       - PROPOSED=true
     build-packages:

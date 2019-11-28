@@ -7,7 +7,7 @@ confinement: strict
 
 parts:
   kernel:
-    source: https://git.launchpad.net/~ubuntu-kernel/+git/kernel-snaps-uc20
+    source: https://git.launchpad.net/~canonical-kernel-snaps/+git/kernel-snaps-uc20
     source-type: git
     source-branch: master
     plugin: make

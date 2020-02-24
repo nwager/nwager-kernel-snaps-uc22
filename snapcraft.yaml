@@ -1,5 +1,5 @@
 name: pc-kernel
-version: 5.4.0-12.15
+version: 5.4.0-15.18
 summary: generic linux kernel
 description: The generic Ubuntu kernel package as a snap
 type: kernel
@@ -7,7 +7,7 @@ confinement: strict
 
 parts:
   kernel:
-    source: https://git.launchpad.net/~canonical-kernel-snaps/+git/kernel-snaps-uc20
+    source: git://git.launchpad.net/~canonical-kernel-snaps/+git/kernel-snaps-uc20
     source-type: git
     source-branch: master
     plugin: make

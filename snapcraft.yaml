@@ -14,7 +14,9 @@ parts:
     make-parameters:
       - KERNEL_SOURCE=focal:linux
       - KERNEL=linux-pc-image
+      - KERNEL_IMAGE_FORMAT=efi
       - PROPOSED=true
     build-packages:
-      - debootstrap
+      - gnupg
+      - kmod
       - lsb-release

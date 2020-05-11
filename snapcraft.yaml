@@ -12,7 +12,7 @@ parts:
     source-branch: master
     plugin: make
     make-parameters:
-      - KERNEL_SOURCE=focal:linux
+      - KERNEL_SOURCE=focal:linux-uc20-efi
       - KERNEL=linux-pc-image
       - KERNEL_IMAGE_FORMAT=efi
       - PROPOSED=true

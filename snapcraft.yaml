@@ -17,6 +17,7 @@ parts:
       - KERNEL_IMAGE_FORMAT=efi
       - PROPOSED=true
     build-packages:
+      - debootstrap
       - gnupg
       - kmod
       - lsb-release

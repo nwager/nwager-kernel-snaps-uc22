@@ -14,7 +14,7 @@ parts:
     make-parameters:
       - KERNEL_SOURCE=focal:linux-uc20-efi
       - KERNEL=linux-pc-image
-      - KERNEL_IMAGE_FORMAT=efi
+      - KERNEL_IMAGE_FORMAT=$(if $(filter x86_64,$(shell uname -a)),efi,vmlinuz)
       - PROPOSED=true
     build-packages:
       - debootstrap

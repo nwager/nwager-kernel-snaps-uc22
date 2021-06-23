@@ -1,5 +1,5 @@
 name: pc-kernel
-version: 5.4.0-75.84.1
+version: 5.4.0-77.86.1
 summary: generic linux kernel
 description: The generic Ubuntu kernel package as a snap
 type: kernel

@@ -4,6 +4,7 @@ summary: generic linux kernel
 description: The generic Ubuntu kernel package as a snap
 type: kernel
 confinement: strict
+build-base: core20
 
 parts:
   kernel:

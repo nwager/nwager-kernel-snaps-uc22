@@ -12,10 +12,14 @@ parts:
     source-type: git
     source-branch: master
     plugin: make
+    build-environment:
+      - on amd64:
+          - KERNEL_IMAGE_FORMAT: efi
+      - else:
+          - KERNEL_IMAGE_FORMAT: vmlinuz
     make-parameters:
       - KERNEL_SOURCE=focal:linux-uc20-efi
       - KERNEL=linux-pc-image
-      - KERNEL_IMAGE_FORMAT=$(if $(filter x86_64,$(shell uname -a)),efi,vmlinuz)
       - PROPOSED=true
     build-packages:
       - debootstrap

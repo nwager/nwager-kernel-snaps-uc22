@@ -1,0 +1,6 @@
+#
+# Kernel Source Information
+#
+series: focal
+source: linux-uc20-efi
+version: 5.4.0-83.93.1

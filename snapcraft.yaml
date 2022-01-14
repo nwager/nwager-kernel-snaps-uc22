@@ -32,6 +32,8 @@ parts:
         - linux-image-uc20-efi-generic
       - else:
         - linux-image-generic
+      - on amd64:
+        - linux-modules-nvidia-470-server-generic
     organize:
       boot: ./
       lib/firmware: firmware
@@ -44,6 +46,14 @@ parts:
       else
         mv "$SNAPCRAFT_PART_INSTALL"/boot/vmlinuz-* "$SNAPCRAFT_PART_INSTALL"/boot/vmlinuz
       fi
+      if [ -d "$SNAPCRAFT_PART_INSTALL"/usr/share/doc/linux-modules-nvidia-470-server-generic ]; then
+        cd "$SNAPCRAFT_PART_INSTALL"/lib/modules/*/kernel/nvidia-470srv/bits
+        sh BUILD
+        # Update depmod
+        depmod -b "$SNAPCRAFT_PART_INSTALL" $(basename "$SNAPCRAFT_PART_INSTALL"/lib/modules/*)
+        # Clean nvidia modules
+        sh CLEAN
+      fi
       snapcraftctl build
     # Exclude transitive dependencies of userspace stage-packages that
     # do not make sense in the kernel snap. E.g. iw tool is shipped in
@@ -54,6 +64,23 @@ parts:
       - -lib
       - -usr
       - -sbin
+      # Exclude current and future, but 470srv
+      - -modules/*/kernel/nvidia-*0
+      - -modules/*/kernel/nvidia-*5
+      - -modules/*/kernel/nvidia-4[156][08]srv
+      - -modules/*/kernel/nvidia-5*srv
       - -doc/crda
       - -doc/iw
       - -doc/linux-base
+      - -doc/binutils*
+      - -doc/libbinutils
+      - -doc/libctf-nobfd0
+      - -doc/libctf0
+      - -doc/libpciaccess0
+      - -doc/nvidia-kernel-common-*
+    override-stage: |
+      snapcraftctl stage
+      # Check that only one nvidia series got shipped
+      if [ "$SNAPCRAFT_TARGET_ARCH" = "amd64" ]; then
+        [ $(ls "$SNAPCRAFT_STAGE"/modules/*/kernel | grep nvidia | wc -l) -eq 1 ]
+      fi

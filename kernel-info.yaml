@@ -1,6 +1,6 @@
 #
 # Kernel Source Information
 #
-series: focal
-source: linux-uc20-efi
+series: jammy
+source: linux-uc22
 version: 5.4.0-97.110.1

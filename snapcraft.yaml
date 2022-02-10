@@ -1,5 +1,6 @@
 name: pc-kernel
-adopt-info: kernel
+#adopt-info: kernel
+version: 5.15.0-18.18.1.1
 grade: stable
 summary: generic linux kernel
 description: The generic Ubuntu kernel package as a snap
@@ -22,9 +23,9 @@ parts:
     plugin: nil
     # Set this snap version to the meta version of the package used to
     # provide kernel.efi / vmlinuz
-    override-pull: |
-      snapcraftctl pull
-      snapcraftctl set-version "$(apt show linux-image-uc22-generic linux-image-generic 2>/dev/null | sed -n 's/^Version: //p' | head -n1)"
+    #override-pull: |
+    #  snapcraftctl pull
+    #  snapcraftctl set-version "$(apt show linux-image-uc22-generic linux-image-generic 2>/dev/null | sed -n 's/^Version: //p' | head -n1)"
     build-packages:
       - kmod
     stage-packages:

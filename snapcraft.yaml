@@ -24,24 +24,19 @@ parts:
     # provide kernel.efi / vmlinuz
     override-pull: |
       snapcraftctl pull
-      snapcraftctl set-version "$(apt show linux-image-uc22-generic linux-image-generic 2>/dev/null | sed -n 's/^Version: //p' | head -n1)"
+      snapcraftctl set-version "$(apt show linux-image-uc22-generic 2>/dev/null | sed -n 's/^Version: //p' | head -n1)"
     build-packages:
       - kmod
     stage-packages:
-      - try:
-        - linux-image-uc22-generic
-      - else:
-        - linux-image-generic
-      - on amd64:
-        - linux-modules-nvidia-470-server-generic
+      - linux-image-uc22-generic
     organize:
       boot: ./
       lib/firmware: firmware
       lib/modules: modules
       usr/share/doc: doc
     override-build: |
-      if [ -d "$SNAPCRAFT_PART_INSTALL"/usr/share/doc/linux-image-uc22-generic ]; then
-        rm -f "$SNAPCRAFT_PART_INSTALL"/boot/vmlinuz-*
+      if [ -e "$SNAPCRAFT_PART_INSTALL"/usr/share/doc/linux-image-uc22-generic/kernelefi.stamp ]; then
+        rm -vf "$SNAPCRAFT_PART_INSTALL"/boot/vmlinuz-*
         mv "$SNAPCRAFT_PART_INSTALL"/boot/kernel.efi-* "$SNAPCRAFT_PART_INSTALL"/boot/kernel.efi
       else
         mv "$SNAPCRAFT_PART_INSTALL"/boot/vmlinuz-* "$SNAPCRAFT_PART_INSTALL"/boot/vmlinuz

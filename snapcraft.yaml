@@ -40,7 +40,7 @@ parts:
       else
         mv "$SNAPCRAFT_PART_INSTALL"/boot/vmlinuz-* "$SNAPCRAFT_PART_INSTALL"/boot/vmlinuz
       fi
-      if [ -d "$SNAPCRAFT_PART_INSTALL"/usr/share/doc/linux-modules-nvidia-470-server-generic ]; then
+      if [ -d "$SNAPCRAFT_PART_INSTALL"/usr/share/doc/linux-signatures-nvidia-*-generic ]; then
         cd "$SNAPCRAFT_PART_INSTALL"/lib/modules/*/kernel/nvidia-470srv/bits
         sh BUILD
         # Update depmod

@@ -37,7 +37,6 @@ parts:
     override-build: |
       if [ -e "$SNAPCRAFT_PART_INSTALL"/usr/share/doc/linux-image-uc22-generic/kernelefi.stamp ]; then
         rm -vf "$SNAPCRAFT_PART_INSTALL"/boot/vmlinuz-*
-        mv "$SNAPCRAFT_PART_INSTALL"/boot/kernel.efi-* "$SNAPCRAFT_PART_INSTALL"/boot/kernel.efi
       else
         mv "$SNAPCRAFT_PART_INSTALL"/boot/vmlinuz-* "$SNAPCRAFT_PART_INSTALL"/boot/vmlinuz
       fi

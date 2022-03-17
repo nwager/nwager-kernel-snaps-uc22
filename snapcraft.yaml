@@ -41,7 +41,7 @@ parts:
         mv "$SNAPCRAFT_PART_INSTALL"/boot/vmlinuz-* "$SNAPCRAFT_PART_INSTALL"/boot/vmlinuz
       fi
       if [ -d "$SNAPCRAFT_PART_INSTALL"/usr/share/doc/linux-signatures-nvidia-*-generic ]; then
-        cd "$SNAPCRAFT_PART_INSTALL"/lib/modules/*/kernel/nvidia-470srv/bits
+        cd "$SNAPCRAFT_PART_INSTALL"/lib/modules/*/kernel/nvidia-510srv/bits
         sh BUILD
         # Update depmod
         depmod -b "$SNAPCRAFT_PART_INSTALL" $(basename "$SNAPCRAFT_PART_INSTALL"/lib/modules/*)
@@ -64,11 +64,11 @@ parts:
       - -bin
       - -var
       - -lib64
-      # Exclude current and future, but 470srv
-      - -modules/*/kernel/nvidia-*0
-      - -modules/*/kernel/nvidia-*5
-      - -modules/*/kernel/nvidia-4[156][08]srv
-      - -modules/*/kernel/nvidia-5*srv
+      # Exclude everything but 510srv
+      - -modules/*/kernel/nvidia-3*
+      - -modules/*/kernel/nvidia-4*
+      - -modules/*/kernel/nvidia-5[0-9][0-9]
+      - -modules/*/kernel/nvidia-5[2-9][0-9]srv
       - -doc/crda
       - -doc/iw
       - -doc/linux-base

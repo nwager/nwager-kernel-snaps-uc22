@@ -61,6 +61,9 @@ parts:
       - -lib
       - -usr
       - -sbin
+      - -bin
+      - -var
+      - -lib64
       # Exclude current and future, but 470srv
       - -modules/*/kernel/nvidia-*0
       - -modules/*/kernel/nvidia-*5
@@ -75,6 +78,15 @@ parts:
       - -doc/libctf0
       - -doc/libpciaccess0
       - -doc/nvidia-kernel-common-*
+      - -doc/debconf
+      - -doc/dpkg
+      - -doc/gcc-*
+      - -doc/kmod*
+      - -doc/lib*
+      - -doc/lsb-base
+      - -doc/perl*
+      - -doc/tar
+      - -doc/zlib1g
     override-stage: |
       snapcraftctl stage
       # Check that only one nvidia series got shipped

@@ -90,6 +90,6 @@ parts:
     override-stage: |
       snapcraftctl stage
       # Check that only one nvidia series got shipped
-      if [ "$SNAPCRAFT_TARGET_ARCH" = "amd64" ]; then
+      if [ "$SNAPCRAFT_TARGET_ARCH" != "armhf" ]; then
         [ $(ls "$SNAPCRAFT_STAGE"/modules/*/kernel | grep nvidia | wc -l) -eq 1 ]
       fi

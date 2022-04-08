@@ -19,6 +19,9 @@ package-repositories:
 
 parts:
   kernel:
+    source: https://git.launchpad.net/~canonical-kernel-snaps/+git/kernel-snaps-uc22
+    source-type: git
+    source-branch: main
     plugin: nil
     # Set this snap version to the meta version of the package used to
     # provide kernel.efi / vmlinuz
@@ -45,11 +48,15 @@ parts:
         sh BUILD
         # Update depmod
         depmod -b "$SNAPCRAFT_PART_INSTALL" $(basename "$SNAPCRAFT_PART_INSTALL"/lib/modules/*)
+        # Trim firmware
+        "$SNAPCRAFT_PART_SRC"/trim-firmware "$SNAPCRAFT_PART_INSTALL"/lib
         # Clean nvidia modules
         sh CLEAN
       else
         # Update depmod
         depmod -b "$SNAPCRAFT_PART_INSTALL" $(basename "$SNAPCRAFT_PART_INSTALL"/lib/modules/*)
+        # Trim firmware
+        "$SNAPCRAFT_PART_SRC"/trim-firmware "$SNAPCRAFT_PART_INSTALL"/lib
       fi
       snapcraftctl build
     # Exclude transitive dependencies of userspace stage-packages that

@@ -32,6 +32,8 @@ parts:
       - kmod
     stage-packages:
       - linux-image-uc22-generic
+      - on amd64:
+        - firmware-sof-signed
     organize:
       boot: ./
       lib/firmware: firmware

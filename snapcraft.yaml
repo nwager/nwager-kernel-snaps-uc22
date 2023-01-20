@@ -12,10 +12,6 @@ build-base: core22
 package-repositories:
   - type: apt
     ppa: canonical-kernel-team/uc20-release
-  - type: apt
-    ppa: canonical-kernel-team/uc20-staging
-  - type: apt
-    ppa: canonical-kernel-team/proposed
 
 parts:
   kernel:

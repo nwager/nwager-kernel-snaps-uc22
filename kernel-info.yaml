@@ -3,4 +3,4 @@
 #
 series: jammy
 source: linux-uc22
-version: 5.15.0-57.63.2
+version: 5.15.0-58.64.1

@@ -52,6 +52,12 @@ parts:
         "$SNAPCRAFT_PART_SRC"/trim-firmware "$SNAPCRAFT_PART_INSTALL"/lib
         # Clean nvidia modules
         sh CLEAN
+        # Fake the nvidia.ko modules pointing at an nvidia assemble location
+        cd ../
+        for module in nvidia-drm.ko nvidia-modeset.ko nvidia-peermem.ko nvidia-uvm.ko nvidia.ko
+        do
+          ln -s /var/snap/nvidia-assemble/common/nvidia-driver/$module $module
+        done
       else
         # Update depmod
         depmod -b "$SNAPCRAFT_PART_INSTALL" $(basename "$SNAPCRAFT_PART_INSTALL"/lib/modules/*)

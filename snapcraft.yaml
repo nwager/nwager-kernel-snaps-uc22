@@ -44,6 +44,8 @@ parts:
       if [ -d "$SNAPCRAFT_PART_INSTALL"/usr/share/doc/linux-signatures-nvidia-*-generic ]; then
         cd "$SNAPCRAFT_PART_INSTALL"/lib/modules/*/kernel/nvidia-*/bits
         sh BUILD
+        # Remove nouveau
+        rm -rf "$SNAPCRAFT_PART_INSTALL"/lib/modules/*/kernel/drivers/gpu/drm/nouveau
         # Update depmod
         depmod -b "$SNAPCRAFT_PART_INSTALL" $(basename "$SNAPCRAFT_PART_INSTALL"/lib/modules/*)
         # Trim firmware

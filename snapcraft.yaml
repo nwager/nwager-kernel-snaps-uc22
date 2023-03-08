@@ -42,7 +42,7 @@ parts:
         mv "$SNAPCRAFT_PART_INSTALL"/boot/vmlinuz-* "$SNAPCRAFT_PART_INSTALL"/boot/vmlinuz
       fi
       if [ -d "$SNAPCRAFT_PART_INSTALL"/usr/share/doc/linux-signatures-nvidia-*-generic ]; then
-        cd "$SNAPCRAFT_PART_INSTALL"/lib/modules/*/kernel/nvidia-*/bits
+        cd $(dirname "$SNAPCRAFT_PART_INSTALL"/lib/modules/*/kernel/nvidia-*/bits/SHA256SUMS)
         sh BUILD
         # Remove nouveau
         rm -rf "$SNAPCRAFT_PART_INSTALL"/lib/modules/*/kernel/drivers/gpu/drm/nouveau
@@ -92,5 +92,5 @@ parts:
       snapcraftctl stage
       # Check that only one nvidia series got shipped
       if [ "$SNAPCRAFT_TARGET_ARCH" != "armhf" ]; then
-        [ $(ls "$SNAPCRAFT_STAGE"/modules/*/kernel | grep nvidia | wc -l) -eq 1 ]
+        [ $(ls "$SNAPCRAFT_STAGE"/modules/*/kernel/nvidia-*/bits/SHA256SUMS | wc -l) -eq 1 ]
       fi

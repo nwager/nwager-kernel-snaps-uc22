@@ -1,96 +1,41 @@
 name: pc-kernel
 adopt-info: kernel
 grade: stable
-summary: generic linux kernel
-description: The generic Ubuntu kernel package as a snap
+summary: OEM linux kernel
+description: The OEM Ubuntu kernel package as a snap
 type: kernel
 confinement: strict
 build-base: core22
-# In addition to these repositories, the /+snap/ page on launchpad may
-# also build with ESM repositories enabled, or built in a particular
-# PPA, which will also be used.
-package-repositories:
-  - type: apt
-    ppa: canonical-kernel-team/uc20-release
+
+architectures:
+  - build-on: [amd64]
 
 parts:
   kernel:
-    source: https://git.launchpad.net/~canonical-kernel-snaps/+git/kernel-snaps-uc22
+    # Need .ko.zst support from u23.10 for backport
+    source: https://git.launchpad.net/~canonical-kernel-snaps/+git/kernel-snaps-u23.10
     source-type: git
     source-branch: main
     plugin: nil
-    # Set this snap version to the meta version of the package used to
-    # provide kernel.efi / vmlinuz
     override-pull: |
-      snapcraftctl pull
-      snapcraftctl set-version "$(apt show linux-image-uc22-generic 2>/dev/null | sed -n 's/^Version: //p' | head -n1)"
+      craftctl default
+      craftctl set version="$(apt show linux-image-uc-oem-22.04d 2>/dev/null | sed -n 's/^Version: //p' | head -n1)"
     build-packages:
       - kmod
     stage-packages:
-      - linux-image-uc22-generic
-      - on amd64:
-        - firmware-sof-signed
+      - linux-image-uc-oem-22.04d
     organize:
       boot: ./
       lib/firmware: firmware
       lib/modules: modules
       usr/share/doc: doc
     override-build: |
-      if [ -e "$SNAPCRAFT_PART_INSTALL"/usr/share/doc/linux-image-uc22-generic/kernelefi.stamp ]; then
-        rm -vf "$SNAPCRAFT_PART_INSTALL"/boot/vmlinuz-*
-      else
-        mv "$SNAPCRAFT_PART_INSTALL"/boot/vmlinuz-* "$SNAPCRAFT_PART_INSTALL"/boot/vmlinuz
-      fi
-      if [ -d "$SNAPCRAFT_PART_INSTALL"/usr/share/doc/linux-signatures-nvidia-*-generic ]; then
-        cd $(dirname "$SNAPCRAFT_PART_INSTALL"/lib/modules/*/kernel/nvidia-*/bits/SHA256SUMS)
-        sh BUILD
-        # Remove nouveau
-        rm -rf "$SNAPCRAFT_PART_INSTALL"/lib/modules/*/kernel/drivers/gpu/drm/nouveau
-        # Update depmod
-        depmod -b "$SNAPCRAFT_PART_INSTALL" $(basename "$SNAPCRAFT_PART_INSTALL"/lib/modules/*)
-        # Trim firmware
-        "$SNAPCRAFT_PART_SRC"/trim-firmware "$SNAPCRAFT_PART_INSTALL"/lib
-        # Clean nvidia modules
-        sh CLEAN
-        # Fake the nvidia.ko modules pointing at an nvidia assemble location
-        cd ../
-        for module in nvidia-drm.ko nvidia-modeset.ko nvidia-peermem.ko nvidia-uvm.ko nvidia.ko
-        do
-          ln -s /var/snap/nvidia-assemble/common/nvidia-driver/$module $module
-        done
-      else
-        # Update depmod
-        depmod -b "$SNAPCRAFT_PART_INSTALL" $(basename "$SNAPCRAFT_PART_INSTALL"/lib/modules/*)
-        # Trim firmware
-        "$SNAPCRAFT_PART_SRC"/trim-firmware "$SNAPCRAFT_PART_INSTALL"/lib
-      fi
-      snapcraftctl build
-    # Exclude transitive dependencies of userspace stage-packages that
-    # do not make sense in the kernel snap. E.g. iw tool is shipped in
-    # base snap, but kernel needs to ship regulatory-db datafiles
-    # alone.
-    stage:
-      - -etc
-      - -lib
-      - -usr
-      - -sbin
-      - -bin
-      - -var
-      - -lib64
-      - -doc/linux-base
-      - -doc/binutils*
-      - -doc/debconf
-      - -doc/dpkg
-      - -doc/gcc-*
-      - -doc/kmod*
-      - -doc/lib*
-      - -doc/lsb-base
-      - -doc/perl*
-      - -doc/tar
-      - -doc/zlib1g
-    override-stage: |
-      snapcraftctl stage
-      # Check that only one nvidia series got shipped
-      if [ "$SNAPCRAFT_TARGET_ARCH" != "armhf" ]; then
-        [ $(ls "$SNAPCRAFT_STAGE"/modules/*/kernel/nvidia-*/bits/SHA256SUMS | wc -l) -eq 1 ]
-      fi
+      # Move kernel.efi
+      mv "$CRAFT_PART_INSTALL"/boot/kernel.efi-* "$CRAFT_PART_INSTALL"/boot/kernel.efi
+      # Update depmod
+      depmod -b "$CRAFT_PART_INSTALL" $(basename "$CRAFT_PART_INSTALL"/lib/modules/*)
+      # Trim firmware
+      ls "$CRAFT_PART_INSTALL"/lib
+      ls "$CRAFT_PART_INSTALL"/lib/firmware/
+      bash -eux "$CRAFT_PART_SRC"/trim-firmware "$CRAFT_PART_INSTALL"/lib
+      craftctl default

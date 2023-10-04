@@ -1,8 +1,8 @@
 name: pc-kernel
 adopt-info: kernel
 grade: stable
-summary: OEM linux kernel
-description: The OEM Ubuntu kernel package as a snap
+summary: HWE linux kernel
+description: The HWE Ubuntu kernel package as a snap
 type: kernel
 confinement: strict
 build-base: core22
@@ -19,11 +19,11 @@ parts:
     plugin: nil
     override-pull: |
       craftctl default
-      craftctl set version="$(apt show linux-image-uc-oem-22.04d 2>/dev/null | sed -n 's/^Version: //p' | head -n1)"
+      craftctl set version="$(apt show linux-image-uc-hwe-22.04 2>/dev/null | sed -n 's/^Version: //p' | head -n1)"
     build-packages:
       - kmod
     stage-packages:
-      - linux-image-uc-oem-22.04d
+      - linux-image-uc-hwe-22.04
     organize:
       boot: ./
       lib/firmware: firmware

@@ -68,6 +68,18 @@ if [ -e "${DESTDIR}"/firmware/regulatory.db ] ; then
 	cp "${DESTDIR}"/firmware/regulatory.* "${DESTDIR}"/firmware.new
 fi
 
+# Copy extra AthrBT files, because they are needed for some devices
+# like the original Asus Zenbook; but do it only if the module ath3k.ko
+# is compiled. The file ath3k-1.fw is already being copied, so
+# it doesn't need to be managed here.
+if [ -n "$(find "${DESTDIR}"/modules -name 'ath3k.ko*')" ] ; then
+	mkdir -p "${DESTDIR}"/firmware.new/ar3k
+	cp -a "${DESTDIR}"/firmware/ar3k/AthrBT_0x*.dfu "${DESTDIR}"/firmware.new/ar3k/
+	# the "ramps_" files are also refered in the source code of the driver, so
+	# we must add them too.
+	cp -a "${DESTDIR}"/firmware/ar3k/ramps_0x*.dfu "${DESTDIR}"/firmware.new/ar3k/
+fi
+
 # Move kernel firmware files to the new firmware directory
 for d in "${DESTDIR}"/modules/* ; do
 	if [ -d "${DESTDIR}"/firmware/"${d##*/}" ] ; then

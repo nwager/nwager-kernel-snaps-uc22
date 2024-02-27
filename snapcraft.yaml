@@ -1,15 +1,15 @@
-name: pc-kernel
+name: nvidia-tegra-igx-kernel
 adopt-info: kernel
 grade: stable
-summary: HWE linux kernel
-description: The HWE Ubuntu kernel package as a snap
+summary: nvidia-tegra-igx linux kernel
+description: The nvidia-tegra-igx Ubuntu kernel package as a snap
 type: kernel
 confinement: strict
 build-base: core22
 
 architectures:
-  - build-on: [amd64]
   - build-on: [arm64]
+    build-for: [arm64]
 
 parts:
   kernel:
@@ -20,11 +20,11 @@ parts:
     plugin: nil
     override-pull: |
       craftctl default
-      craftctl set version="$(apt show linux-image-uc-generic-hwe-22.04 2>/dev/null | sed -n 's/^Version: //p' | head -n1)"
+      craftctl set version="$(apt show linux-image-uc-nvidia-tegra-igx 2>/dev/null | sed -n 's/^Version: //p' | head -n1)"
     build-packages:
       - kmod
     stage-packages:
-      - linux-image-uc-generic-hwe-22.04
+      - linux-image-uc-nvidia-tegra-igx
     organize:
       boot: ./
       lib/firmware: firmware
